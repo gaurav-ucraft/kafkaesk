@@ -162,6 +162,7 @@ class KafkaQueue extends Queue implements QueueContract
             }
             
             return new KafkaJob(
+                $this->container,
                 $this,
                 $message,
                 $this->connectionName,

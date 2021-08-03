@@ -15,6 +15,7 @@ use Aplr\Kafkaesk\Contracts\Kafka as KafkaContract;
 use Aplr\Kafkaesk\Queue\KafkaConnector;
 use Aplr\Kafkaesk\Console\ConsumeCommand;
 use Aplr\Kafkaesk\Console\RestartCommand;
+use Illuminate\Support\Facades\App;
 
 class ServiceProvider extends BaseServiceProvider implements DeferrableProvider
 {
@@ -233,7 +234,7 @@ class ServiceProvider extends BaseServiceProvider implements DeferrableProvider
     private function registerConnector($manager, $container)
     {
         $manager->addConnector('kafka', function () use ($container) {
-            return new KafkaConnector($container, $container['log']);
+            return new KafkaConnector($this->app->make(KafkaManager::class), $container['log']);
         });
     }
 
@@ -265,6 +266,7 @@ class ServiceProvider extends BaseServiceProvider implements DeferrableProvider
             'kafka.consumer',
             'kafka.producer',
             'kafka.topicConf',
+            'kafka.connector',
             // kafka
             'kafka',
             'kafka.worker',
